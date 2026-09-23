@@ -3,11 +3,17 @@
 
 package entry
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+
+	"github.com/unicorn-engine/unicorn/bindings/go/unicorn"
+)
 
 // Entry represents the Vacui hardware application entry.
 type Entry struct {
 	mu sync.Mutex
+	uc unicorn.Unicorn
 }
 
 func New() *Entry {
@@ -27,9 +33,16 @@ func (e *Entry) Start() error {
 }
 
 func (e *Entry) init() error {
+	uc, err := unicorn.NewUnicorn(unicorn.ARCH_X86, unicorn.MODE_32)
+	if err != nil {
+		return fmt.Errorf("initializing unicorn.Unicorn failed: %v", err)
+	}
+	e.uc = uc
 	return nil
 }
 
 func (e *Entry) close() {
-
+	if e.uc != nil {
+		e.uc.Close()
+	}
 }
