@@ -7,8 +7,8 @@ package memory
 // access to specific memory region.
 type RegionFlag uint32
 
-// Region consists of its physical address, size and permission flags
-// for the hardware and a guest program.
+// Region represents a memory region that consists of its physical address, size 
+// and permission flags for the hardware and a guest program.
 type Region struct {
 	PhysAddress       uint64
 	Size              uint64
